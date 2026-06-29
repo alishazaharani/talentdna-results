@@ -1,0 +1,382 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 430px;
+
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background: white;
+
+  position: relative;
+
+  overflow-x: hidden;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 20px;
+
+  background: rgba(255,255,255,0.9);
+
+  backdrop-filter: blur(12px);
+}
+
+.search-icon {
+  width: 40px;
+  height: 40px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f1f5f9;
+
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #3b82f6
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-weight: 700;
+}
+
+.hero {
+  margin: 12px 16px 0;
+
+  padding: 28px;
+
+  border-radius: 28px;
+
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #312e81
+  );
+
+  color: white;
+}
+
+.hero-logo {
+  font-size: 12px;
+
+  opacity: 0.8;
+
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  font-weight: 800;
+
+  line-height: 1.1;
+
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 18px;
+  font-weight: 600;
+
+  line-height: 1.4;
+
+  margin-bottom: 16px;
+}
+
+.hero span {
+  display: block;
+
+  opacity: 0.8;
+
+  line-height: 1.6;
+}
+
+.overview-card {
+  margin: 16px;
+
+  padding: 24px;
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  border: 1px solid #e2e8f0;
+}
+
+.overview-header {
+  margin-bottom: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #7c3aed;
+}
+
+.overview-card h2 {
+  font-size: 20px;
+  line-height: 1.4;
+
+  margin-bottom: 12px;
+
+  color: #0f172a;
+}
+
+.overview-card p {
+  color: #64748b;
+
+  line-height: 1.6;
+
+  font-size: 14px;
+}
+
+.domain-section {
+  margin: 0 16px 24px;
+}
+
+.section-title {
+  margin-bottom: 16px;
+}
+
+.section-title h2 {
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.section-title p {
+  margin-top: 4px;
+
+  font-size: 14px;
+
+  color: #64748b;
+}
+
+.domain-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.domain-card {
+  padding: 16px;
+
+  border-radius: 20px;
+}
+
+.domain-label {
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.domain-card h3 {
+  margin-top: 12px;
+
+  font-size: 28px;
+
+  font-weight: 800;
+}
+
+.domain-card p {
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+.drive {
+  background: #eff6ff;
+}
+
+.network {
+  background: #fefce8;
+}
+
+.action {
+  background: #fdf2f8;
+}
+.search-section {
+  margin: 0 16px 24px;
+}
+
+.search-input {
+  width: 100%;
+
+  padding: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #7c3aed;
+}
+.talent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.talent-card {
+  padding: 20px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.talent-card:hover {
+  transform: translateY(-2px);
+}
+
+.talent-card h3 {
+  margin-top: 10px;
+
+  font-size: 18px;
+}
+
+.talent-domain {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.7);
+
+  font-size: 12px;
+}
+
+.talent-card p {
+  margin-top: 12px;
+
+  color: #475569;
+
+  font-size: 14px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 999;
+}
+
+.modal-card {
+  width: 100%;
+
+  max-width: 340px;
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 24px;
+}
+
+.modal-card h2 {
+  margin-top: 12px;
+}
+
+.modal-card p {
+  margin-top: 16px;
+
+  line-height: 1.7;
+}
+
+.modal-card button {
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #7c3aed;
+
+  color: white;
+}
+
+.top-talent-section {
+  margin: 0 16px 100px;
+}
+
+.bottom-nav {
+  position: fixed;
+
+  bottom: 0;
+
+  width: 100%;
+
+  max-width: 430px;
+
+  display: flex;
+
+  justify-content: space-around;
+
+  padding: 16px;
+
+  background: white;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+.bottom-nav button {
+  border: none;
+
+  background: transparent;
+
+  font-size: 20px;
+}
