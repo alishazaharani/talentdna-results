@@ -380,3 +380,51 @@
 
   font-size: 20px;
 }
+
+@keyframes floatingAI{
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-8px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+}
+
+@keyframes pulseGlow{
+
+  0%{
+    box-shadow:
+      0 0 0 rgba(123,92,245,0),
+      0 0 18px rgba(123,92,245,.18);
+  }
+
+  50%{
+    box-shadow:
+      0 0 24px rgba(123,92,245,.55),
+      0 0 60px rgba(123,92,245,.30);
+  }
+
+  100%{
+    box-shadow:
+      0 0 0 rgba(123,92,245,0),
+      0 0 18px rgba(123,92,245,.18);
+  }
+
+}
+
+@keyframes rotateRing{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}

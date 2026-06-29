@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { ChevronRight, ChevronDown, X, ArrowLeft, Search, FileText, Download } from "lucide-react";
 import tdnaLogo from "../assets/tdna_logo.png";
+import mrZero from "../assets/mrzero.png";
 import { talents } from "../data/talents";
 import profileImg from "../assets/profile.jpg";
 
@@ -406,6 +407,271 @@ function TalentModal({ talent, onClose }) {
           Tutup
         </button>
       </div>
+    </div>
+  );
+}
+
+function MrZeroFloatingButton({ isDesktop }) {
+  const [showBubble, setShowBubble] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside() {
+      setShowBubble(false);
+    }
+
+    if (showBubble) {
+      window.addEventListener("click", handleClickOutside);
+    }
+
+    return () =>
+      window.removeEventListener("click", handleClickOutside);
+  }, [showBubble]);
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        right: isDesktop ? 28 : 18,
+        bottom: isDesktop ? 28 : 22,
+        zIndex: 999,
+      }}
+    >
+      {/* Bubble */}
+      {showBubble && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "absolute",
+            bottom: 72,
+            right: isDesktop ? 20 : 0,
+
+            width: isDesktop ? 260 : 220,
+
+            background:
+              "linear-gradient(135deg,#8B5CF6,#7B5CF5)",
+
+            color: "#fff",
+
+            borderRadius: 18,
+
+            padding: "18px",
+
+            boxShadow:
+              "0 14px 34px rgba(123,92,245,.35)",
+
+            animation: "fadeIn .25s ease",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 15,
+              marginBottom: 6,
+            }}
+          >
+            AI Coach Mr.Zero
+          </div>
+
+          <div
+            style={{
+              fontSize: 13,
+              lineHeight: 1.55,
+              opacity: .95,
+            }}
+          >
+            Punya pertanyaan tentang hasil TalentDNA?
+            Aku siap membantu menjelaskannya.
+          </div>
+
+          <button
+  onClick={() => {
+    window.open(
+      "https://talentdna.me/tdna/lite/0e183ab221d343b9680ffebfeadd6a83d75e662c?ucode=VFp3RENFanYweVhWQmlGRGxtRElYcy9pdXY5SkZEc3JxRUVPb3Zvd0piTGFyUGw5dDhqZEZmbTMzSEtrSkFuVA==",
+      "_blank"
+    );
+  }}
+  style={{
+    marginTop: 12,
+    background: "#fff",
+    color: C.primary,
+    border: "none",
+    borderRadius: 999,
+    padding: "8px 14px",
+    fontWeight: 700,
+    cursor: "pointer",
+    transition: "all .2s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-2px)";
+    e.currentTarget.style.boxShadow = "0 8px 20px rgba(123,92,245,.25)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = "none";
+  }}
+>
+  ✨ Mulai Chat
+</button>
+
+          {/* Bubble Arrow */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: -6,
+              right: 24,
+
+              width: 14,
+              height: 14,
+
+              background: "#7B5CF5",
+
+              transform: "rotate(45deg)",
+
+              borderRadius: 2,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Avatar */}
+      <a
+  href="LINK_MRZERO"
+  target="_blank"
+  rel="noopener noreferrer"
+
+  onClick={(e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    setShowBubble(!showBubble);
+  }}
+
+  style={{
+    position:"relative",
+
+    width:isDesktop?62:58,
+    height:isDesktop?62:58,
+
+    display:"block",
+
+    animation:"floatingAI 3.5s ease-in-out infinite",
+
+    cursor:"pointer",
+  }}
+>
+        {/* Ring */}
+     <div
+  style={{
+    position:"absolute",
+
+    inset:-4,
+
+    borderRadius:"50%",
+
+    padding:2,
+
+    background:
+      "linear-gradient(135deg,#8B5CF6,#A78BFA,#6D4CF5,#8B5CF6)",
+
+    animation:
+      "rotateRing 6s linear infinite, pulseGlow 2.2s ease-in-out infinite",
+  }}
+>
+
+  <div
+    style={{
+      width:"100%",
+      height:"100%",
+
+      borderRadius:"50%",
+
+      background:"#fff",
+    }}
+  />
+
+</div>
+
+{/* Desktop Label */}
+{isDesktop && !showBubble && (
+  <div
+    style={{
+      position: "absolute",
+
+      right: 72,
+      top: "50%",
+
+      transform: "translateY(-50%)",
+
+      background: "rgba(255,255,255,.88)",
+
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+
+      border: `1px solid ${C.purpleTint}`,
+
+      borderRadius: 999,
+
+      padding: "8px 14px",
+
+      boxShadow:
+        "0 8px 24px rgba(26,20,86,.10)",
+
+      whiteSpace: "nowrap",
+
+      pointerEvents: "none",
+
+      zIndex: 3,
+    }}
+  >
+    <div
+      style={{
+        fontSize: 12,
+        fontWeight: 700,
+        color: C.primary,
+        lineHeight: 1.15,
+      }}
+    >
+     Mr. Zero
+    </div>
+
+    <div
+      style={{
+        fontSize: 10,
+        color: C.textSecondary,
+        lineHeight: 1.15,
+      }}
+    >
+      AI Coach
+    </div>
+  </div>
+)}
+        {/* Foto */}
+       <img
+  src={mrZero}
+  alt="Mr.Zero"
+
+  style={{
+
+    position:"absolute",
+
+    inset:2,
+
+    width:"calc(100% - 4px)",
+    height:"calc(100% - 4px)",
+
+    borderRadius:"50%",
+
+    objectFit:"cover",
+
+    zIndex:2,
+
+    transition:".25s",
+
+    boxShadow:
+      "0 12px 30px rgba(123,92,245,.35)",
+
+  }}
+/>
+      </a>
     </div>
   );
 }
@@ -1029,6 +1295,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
         {/* Download CTA */}
         <DownloadBanner user={user} isDesktop={isDesktop}/>
       </div>
+      <MrZeroFloatingButton isDesktop={isDesktop} />
     </>
   );
 }
@@ -1078,6 +1345,53 @@ export default function TalentDNAResults() {
             opacity: 0.75;
           }
         }
+          @keyframes floatingAI{
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-8px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+}
+
+@keyframes pulseGlow{
+
+  0%{
+    box-shadow:
+      0 0 0 rgba(123,92,245,0),
+      0 0 18px rgba(123,92,245,.18);
+  }
+
+  50%{
+    box-shadow:
+      0 0 24px rgba(123,92,245,.55),
+      0 0 60px rgba(123,92,245,.30);
+  }
+
+  100%{
+    box-shadow:
+      0 0 0 rgba(123,92,245,0),
+      0 0 18px rgba(123,92,245,.18);
+  }
+
+}
+
+@keyframes rotateRing{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
       `}</style>
 
       {activeDomainView ? (
