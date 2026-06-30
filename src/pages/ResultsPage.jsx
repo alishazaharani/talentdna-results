@@ -142,19 +142,22 @@ function TalentCard({ talent, onSelect, theme }) {
 /* ─────────────────────────── COLLAPSIBLE TALENT SECTION ─────────────────────────── */
 function TalentGridSection({ title, subtitle, talents, defaultOpen, onSelectTalent, cols = 2, theme }) {
   const [open, setOpen] = useState(defaultOpen || false);
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div style={{ background: theme.surface, borderRadius:20, marginBottom:14, overflow:"hidden", border:`1px solid ${theme.border}` }}>
       <button
         onClick={() => setOpen(!open)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className="section-toggle"
         style={{
           width:"100%", display:"flex", justifyContent:"space-between", alignItems:"center",
-          padding:"18px 20px", background:"transparent", border:"none", cursor:"pointer", textAlign:"left",
+          padding:"18px 20px", background:isHovered ? theme.sectionHoverBg : "transparent", border:"none", cursor:"pointer", textAlign:"left",
           transition:"background 0.15s",
         }}
       >
         <div>
-          <div style={{ fontFamily:FONT_HEAD, fontSize:16, fontWeight:600, color:theme.textPrimary }}>
+          <div style={{ fontFamily:FONT_HEAD, fontSize:16, fontWeight:600, color:isHovered ? theme.sectionHoverTitle : theme.textPrimary }}>
             {title}&nbsp;<span style={{ color:theme.textSecondary, fontWeight:500, fontSize:13 }}>({talents.length})</span>
           </div>
           <div style={{ fontFamily:FONT_BODY, fontSize:12.5, color:theme.textSecondary, marginTop:2 }}>{subtitle}</div>
@@ -1484,24 +1487,19 @@ function ResultsScreen({ user, onOpenDomain, isDesktop, darkMode, setDarkMode, t
         style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: isDesktop ? 8 : 0,
           justifyContent: "center",
-          padding: isDesktop ? "10px 14px" : "10px",
-          minWidth: isDesktop ? 130 : 40,
-          height: isDesktop ? 42 : 40,
+          padding: "10px",
+          width: 40,
+          height: 40,
           borderRadius: 999,
           border: `1px solid ${theme.border}`,
           background: theme.surface,
           color: theme.textPrimary,
           cursor: "pointer",
-          fontFamily: FONT_BODY,
-          fontWeight: 700,
-          fontSize: isDesktop ? 13 : 0,
           transition: "all .2s ease",
         }}
       >
         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        {isDesktop && (darkMode ? "Light Mode" : "Dark Mode")}
       </button>
 
       <div
@@ -1652,10 +1650,12 @@ export default function TalentDNAResults() {
     pageBg: darkMode ? "#0F1428" : C.pageBg,
     white: darkMode ? "#171D34" : "#FFFFFF",
     textPrimary: darkMode ? "#FFFFFF" : C.textPrimary,
-    textSecondary: darkMode ? "#AAB2D8" : C.textSecondary,
+    sectionHoverTitle: darkMode ? "#564097" : C.textPrimary,
+    textSecondary: darkMode ? "#8288a8" : C.textSecondary,
     purpleTint: darkMode ? "#293152" : C.purpleTint,
     mutedText: darkMode ? "#C9D0F3" : C.mutedText,
     surface: darkMode ? "#161E3F" : "#FFFFFF",
+    sectionHoverBg: darkMode ? "rgba(255,255,255,0.08)" : "#FAFAFF",
     navBg: darkMode ? "rgba(15,20,40,0.92)" : "rgba(245,244,255,0.85)",
     navText: darkMode ? "#E3E8FF" : C.textPrimary,
     border: darkMode ? "#2A3153" : C.purpleTint,
