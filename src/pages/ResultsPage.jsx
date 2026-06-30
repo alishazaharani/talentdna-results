@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { ChevronRight, ChevronDown, X, ArrowLeft, Search, FileText, Download } from "lucide-react";
+import { ChevronRight, ChevronDown, X, ArrowLeft, Search, FileText, Download, Moon, Sun } from "lucide-react";
 import tdnaLogo from "../assets/tdna_logo.png";
 import mrZero from "../assets/mrzero.png";
 import { talents } from "../data/talents";
@@ -102,7 +102,7 @@ function SectionLabel({ children, center }) {
 }
 
 /* ─────────────────────────── TALENT CARD ─────────────────────────── */
-function TalentCard({ talent, onSelect }) {
+function TalentCard({ talent, onSelect, theme }) {
   const d = DOMAINS[talent.domain];
   return (
     <button
@@ -111,8 +111,8 @@ function TalentCard({ talent, onSelect }) {
       style={{
         display:"flex", flexDirection:"column", gap:8,
         padding:"14px 12px",
-        background: C.white,
-        border:`1px solid ${C.purpleTint}`,
+        background: theme.surface,
+        border:`1px solid ${theme.border}`,
         borderRadius:16,
         cursor:"pointer", textAlign:"left", minWidth:0,
         width:"100%",
@@ -130,20 +130,20 @@ function TalentCard({ talent, onSelect }) {
       </div>
       <span style={{
         fontFamily:FONT_BODY, fontSize:13.5, fontWeight:600,
-        color:C.textPrimary, lineHeight:1.3,
+        color:theme.textPrimary, lineHeight:1.3,
         overflow:"hidden", textOverflow:"ellipsis",
         display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical",
       }}>{talent.name}</span>
-      <span style={{ fontFamily:FONT_BODY, fontSize:11, color:C.textSecondary }}>{d.label}</span>
+      <span style={{ fontFamily:FONT_BODY, fontSize:11, color:theme.textSecondary }}>{d.label}</span>
     </button>
   );
 }
 
 /* ─────────────────────────── COLLAPSIBLE TALENT SECTION ─────────────────────────── */
-function TalentGridSection({ title, subtitle, talents, defaultOpen, onSelectTalent, cols = 2 }) {
+function TalentGridSection({ title, subtitle, talents, defaultOpen, onSelectTalent, cols = 2, theme }) {
   const [open, setOpen] = useState(defaultOpen || false);
   return (
-    <div style={{ background:C.white, borderRadius:20, marginBottom:14, overflow:"hidden", border:`1px solid ${C.purpleTint}` }}>
+    <div style={{ background: theme.surface, borderRadius:20, marginBottom:14, overflow:"hidden", border:`1px solid ${theme.border}` }}>
       <button
         onClick={() => setOpen(!open)}
         className="section-toggle"
@@ -154,23 +154,23 @@ function TalentGridSection({ title, subtitle, talents, defaultOpen, onSelectTale
         }}
       >
         <div>
-          <div style={{ fontFamily:FONT_HEAD, fontSize:16, fontWeight:600, color:C.textPrimary }}>
-            {title}&nbsp;<span style={{ color:C.textSecondary, fontWeight:500, fontSize:13 }}>({talents.length})</span>
+          <div style={{ fontFamily:FONT_HEAD, fontSize:16, fontWeight:600, color:theme.textPrimary }}>
+            {title}&nbsp;<span style={{ color:theme.textSecondary, fontWeight:500, fontSize:13 }}>({talents.length})</span>
           </div>
-          <div style={{ fontFamily:FONT_BODY, fontSize:12.5, color:C.textSecondary, marginTop:2 }}>{subtitle}</div>
+          <div style={{ fontFamily:FONT_BODY, fontSize:12.5, color:theme.textSecondary, marginTop:2 }}>{subtitle}</div>
         </div>
-        <ChevronDown size={20} color={C.primary}
+        <ChevronDown size={20} color={theme.primary}
           style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform 0.25s", flexShrink:0 }}/>
       </button>
       {open && (
         <div style={{ padding:"0 16px 18px" }}>
           {talents.length === 0 ? (
-            <div style={{ textAlign:"center", padding:"20px 10px", color:C.textSecondary, fontFamily:FONT_BODY, fontSize:13 }}>
+            <div style={{ textAlign:"center", padding:"20px 10px", color:theme.textSecondary, fontFamily:FONT_BODY, fontSize:13 }}>
               Tidak ada talent yang cocok.
             </div>
           ) : (
             <div className="talent-grid" style={{ display:"grid", gridTemplateColumns:`repeat(${cols}, 1fr)`, gap:10 }}>
-              {talents.map(t => <TalentCard key={t.id} talent={t} onSelect={onSelectTalent}/>)}
+              {talents.map(t => <TalentCard key={t.id} talent={t} onSelect={onSelectTalent} theme={theme}/>)}
             </div>
           )}
         </div>
@@ -180,44 +180,44 @@ function TalentGridSection({ title, subtitle, talents, defaultOpen, onSelectTale
 }
 
 /* ─────────────────────────── SEARCH + FILTER ─────────────────────────── */
-function SearchFilterBar({ query, onQueryChange, activeDomain, onDomainChange }) {
+function SearchFilterBar({ query, onQueryChange, activeDomain, onDomainChange, theme }) {
   const filters = ["All","Drive","Network","Action"];
   return (
     <div style={{ marginBottom:18 }}>
       <div style={{
         display:"flex", alignItems:"center", gap:10,
-        background:C.white, border:`1px solid ${C.purpleTint}`,
+        background:theme.surface, border:`1px solid ${theme.border}`,
         borderRadius:16, padding:"12px 14px", marginBottom:10,
         transition:"box-shadow 0.15s",
       }}
-        onFocus={e => e.currentTarget.style.boxShadow=`0 0 0 3px ${C.purpleTint}`}
+        onFocus={e => e.currentTarget.style.boxShadow=`0 0 0 3px ${theme.border}`}
         onBlur={e  => e.currentTarget.style.boxShadow="none"}
       >
-        <Search size={17} color={C.textSecondary}/>
+        <Search size={17} color={theme.textSecondary}/>
         <input
           value={query}
           onChange={e => onQueryChange(e.target.value)}
           placeholder="Cari nama talent..."
-          style={{ flex:1, border:"none", outline:"none", background:"transparent", fontFamily:FONT_BODY, fontSize:13.5, color:C.textPrimary }}
+          style={{ flex:1, border:"none", outline:"none", background:"transparent", fontFamily:FONT_BODY, fontSize:13.5, color:theme.textPrimary }}
         />
         {query && (
           <button onClick={() => onQueryChange("")} style={{ border:"none", background:"transparent", cursor:"pointer", display:"flex" }}>
-            <X size={15} color={C.textSecondary}/>
+            <X size={15} color={theme.textSecondary}/>
           </button>
         )}
       </div>
       <div style={{ display:"flex", gap:8, overflowX:"auto", paddingBottom:4 }}>
         {filters.map(f => {
           const isActive = activeDomain === f;
-          const col = f === "All" ? C.primary : DOMAINS[f].color;
+          const col = f === "All" ? theme.primary : DOMAINS[f].color;
           return (
             <button key={f} onClick={() => onDomainChange(f)}
               style={{
                 display:"flex", alignItems:"center", gap:6,
                 padding:"8px 14px", borderRadius:20,
-                border:`1.5px solid ${isActive ? col : C.purpleTint}`,
-                background: isActive ? col+"22" : C.white,
-                color: isActive ? col : C.textSecondary,
+                border:`1.5px solid ${isActive ? col : theme.border}`,
+                background: isActive ? col+"22" : theme.surface,
+                color: isActive ? col : theme.textSecondary,
                 fontFamily:FONT_BODY, fontSize:12.5, fontWeight:600,
                 cursor:"pointer", whiteSpace:"nowrap", flexShrink:0,
                 transition:"all 0.15s",
@@ -235,7 +235,7 @@ function SearchFilterBar({ query, onQueryChange, activeDomain, onDomainChange })
 
 /* ─────────────────────────── TALENT MODAL ─────────────────────────── */
 
-function TalentModal({ talent, onClose }) {
+function TalentModal({ talent, onClose, theme }) {
   if (!talent) return null;
 
   const d = DOMAINS[talent.domain];
@@ -260,7 +260,7 @@ function TalentModal({ talent, onClose }) {
         style={{
           width: "100%",
           maxWidth: 430,
-          background: C.white,
+          background: theme.surface,
           borderRadius: 28,
           padding: "26px",
           position: "relative",
@@ -279,14 +279,15 @@ function TalentModal({ talent, onClose }) {
             height: 34,
             borderRadius: 999,
             border: "none",
-            background: C.pageBg,
+            background: theme.pageBg,
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
+          className="modal-close-btn"
         >
-          <X size={16} color={C.textSecondary} />
+          <X size={16} color={theme.textSecondary} />
         </button>
 
         {/* Domain Icon */}
@@ -335,7 +336,7 @@ function TalentModal({ talent, onClose }) {
           style={{
             fontFamily: FONT_HEAD,
             fontSize: 24,
-            color: C.textPrimary,
+            color: theme.textPrimary,
             margin: 0,
           }}
         >
@@ -361,7 +362,7 @@ function TalentModal({ talent, onClose }) {
           style={{
             fontSize: 14,
             fontWeight: 600,
-            color: C.textPrimary,
+            color: theme.textPrimary,
             lineHeight: 1.6,
             marginBottom: 12,
             fontFamily: FONT_BODY,
@@ -375,7 +376,7 @@ function TalentModal({ talent, onClose }) {
           style={{
             fontSize: 14,
             lineHeight: 1.8,
-            color: C.textSecondary,
+            color: theme.textSecondary,
             marginBottom: 24,
             fontFamily: FONT_BODY,
           }}
@@ -805,33 +806,205 @@ function DownloadReportButton({ user, centered }) {
   );
 }
 
+
+/* ─────────────────────────── MOBILE: Hero Section ─────────────────────────── */
 /* ─────────────────────────── MOBILE: Hero Section ─────────────────────────── */
 function MobileHero({ name }) {
   return (
-    <div style={{
-      background:`linear-gradient(160deg, ${C.navy}, ${C.purpleCard})`,
-      borderRadius:24, padding:"22px 22px 24px",
-      marginBottom:18, position:"relative", overflow:"hidden",
-    }}>
-      <div style={{ position:"absolute", right:-18, top:-18, opacity:0.45 }}>
-        <DnaOrbitMark size={130}/>
+    <div
+      style={{
+        background: `linear-gradient(145deg, ${C.navy} 0%, #2A1A7A 50%, ${C.purpleCard} 100%)`,
+        borderRadius: 24,
+        padding: "28px 24px",
+        marginBottom: 20,
+        position: "relative",
+        overflow: "hidden",
+        minHeight: 240,
+      }}
+    >
+      {/* Decorative Glows */}
+      <div
+        style={{
+          position: "absolute",
+          left: -60,
+          top: -60,
+          width: 220,
+          height: 220,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${C.drive}30 0%, transparent 70%)`,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          right: -40,
+          bottom: -50,
+          width: 180,
+          height: 180,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${C.action}28 0%, transparent 70%)`,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          right: "10%",
+          width: 120,
+          height: 120,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${C.network}20 0%, transparent 70%)`,
+        }}
+      />
+
+      {/* Orbit */}
+      <div
+        style={{
+          position: "absolute",
+          right: -20,
+          top: "50%",
+          transform: "translateY(-50%)",
+          opacity: 0.5,
+        }}
+      >
+        <DnaOrbitMark size={145} />
       </div>
-      <div style={{ position:"relative", zIndex:1 }}>
-        <span style={{ fontFamily:FONT_BODY, fontSize:12, color:C.mutedText, fontWeight:600, letterSpacing:0.4 }}>
-          HALO, {name.toUpperCase()}
-        </span>
-        <h2 style={{ fontFamily:FONT_HEAD, fontSize:20, color:C.white, lineHeight:1.4, margin:"8px 0 10px", maxWidth:220 }}>
-          Jadi... kamu ini orang seperti apa?
-        </h2>
-        <p style={{ fontFamily:FONT_BODY, fontSize:13, color:C.mutedText, lineHeight:1.6, maxWidth:250 }}>
-          Hasil TalentDNA-mu telah dipetakan ke dalam{" "}
-          <strong style={{ color:C.white }}>45 talenta</strong> yang terbagi ke dalam tiga domain utama.
+
+      {/* Floating Particles */}
+      <div
+        style={{
+          position: "absolute",
+          left: "48%",
+          top: 20,
+          width: 5,
+          height: 5,
+          borderRadius: "50%",
+          background: C.purpleLight,
+          opacity: 0.7,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          left: "75%",
+          bottom: 26,
+          width: 4,
+          height: 4,
+          borderRadius: "50%",
+          background: C.drive,
+          opacity: 0.55,
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          left: "24%",
+          bottom: 44,
+          width: 4,
+          height: 4,
+          borderRadius: "50%",
+          background: C.action,
+          opacity: 0.6,
+        }}
+      />
+
+      {/* Content */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          maxWidth: 230,
+        }}
+      >
+        {/* Badge */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            background: "rgba(255,255,255,.10)",
+            border: "1px solid rgba(255,255,255,.12)",
+            borderRadius: 999,
+            padding: "5px 12px",
+            marginBottom: 16,
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          <DnaOrbitMark size={15} opacity={0.9} />
+
+          <span
+            style={{
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: .5,
+              color: C.mutedText,
+            }}
+          >
+            TALENT DNA REPORT
+          </span>
+        </div>
+
+        {/* Heading */}
+        <h1
+          style={{
+            fontFamily: FONT_HEAD,
+            fontSize: 22,
+            lineHeight: 1.28,
+            fontWeight: 700,
+            color: "#fff",
+            margin: "0 0 12px",
+          }}
+        >
+          Halo, {name}.<br />
+
+          <span
+            style={{
+              color: C.purpleLight,
+            }}
+          >
+            Inilah dirimu.
+          </span>
+        </h1>
+
+        {/* Description */}
+        <p
+          style={{
+            fontSize: 13,
+            lineHeight: 1.65,
+            color: C.mutedText,
+            margin: 0,
+          }}
+        >
+          45 talenta unik telah dipetakan dari pola perilaku alami kamu, 
+          terbagi ke dalam tiga domain utama:
+          <span
+            style={{
+              color: "#fff",
+              fontWeight: 600,
+            }}
+          >
+            {" "}Drive, Network,
+          </span>{" "}
+          dan
+          <span
+            style={{
+              color: "#fff",
+              fontWeight: 600,
+            }}
+          >
+            {" "}Action.
+          </span>
         </p>
+
+        {/* Tidak ada stats di mobile */}
       </div>
     </div>
   );
 }
-
 /* ─────────────────────────── DESKTOP: Hero Section ─────────────────────────── */
 function DesktopHero({ name }) {
   return (
@@ -874,7 +1047,7 @@ function DesktopHero({ name }) {
           <span style={{ color:C.purpleLight }}>Inilah dirimu.</span>
         </h1>
         <p style={{ fontFamily:FONT_BODY, fontSize:15, color:C.mutedText, lineHeight:1.7, maxWidth:440 }}>
-          45 talenta unik telah dipetakan dari pola perilaku alami kamu —
+          45 talenta unik telah dipetakan dari pola perilaku alami kamu, 
           terbagi ke dalam tiga domain utama: Drive, Network, dan Action.
         </p>
 
@@ -902,12 +1075,12 @@ const DOMAIN_PILL = {
 
 
 /* ─────────────────────────── SHARED: Domain Summary Cards ─────────────────────────── */
-function DomainSummaryCards({ onOpenDomain, isDesktop }) {
+function DomainSummaryCards({ onOpenDomain, isDesktop, theme }) {
   return (
     <div style={{ marginBottom: isDesktop ? 44 : 22 }}>
       <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom: isDesktop ? 18 : 12 }}>
         <SectionLabel>Struktur Talentamu</SectionLabel>
-        {isDesktop && <div style={{ flex:1, height:1, background:C.purpleTint }}/>}
+        {isDesktop && <div style={{ flex:1, height:1, background:theme.border }}/>}
       </div>
       <div style={{
         display:"grid",
@@ -916,9 +1089,9 @@ function DomainSummaryCards({ onOpenDomain, isDesktop }) {
       }}>
         {Object.entries(DOMAINS).map(([key, d]) => (
           <div key={key} className="domain-card-desktop" style={{
-            background:C.white,
+            background:theme.surface,
             borderRadius: isDesktop ? 22 : 18,
-            border:`1px solid ${C.purpleTint}`,
+            border:`1px solid ${theme.border}`,
             overflow:"hidden",
             position:"relative",
             transition:"box-shadow 0.2s, transform 0.2s, border-color 0.2s",
@@ -936,8 +1109,8 @@ function DomainSummaryCards({ onOpenDomain, isDesktop }) {
                   <div style={{ width:16, height:16, borderRadius:8, background:d.color }}/>
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ fontFamily:FONT_HEAD, fontWeight:700, fontSize: isDesktop ? 15 : 14, color:C.textPrimary, marginBottom:3 }}>{d.label}</div>
-                  <div style={{ fontFamily:FONT_BODY, fontSize:12, color:C.textSecondary, lineHeight:1.5 }}>{d.desc}</div>
+                  <div style={{ fontFamily:FONT_HEAD, fontWeight:700, fontSize: isDesktop ? 15 : 14, color:theme.textPrimary, marginBottom:3 }}>{d.label}</div>
+                  <div style={{ fontFamily:FONT_BODY, fontSize:12, color:theme.textSecondary, lineHeight:1.5 }}>{d.desc}</div>
                 </div>
               </div>
               {/* Detail link */}
@@ -985,7 +1158,7 @@ function DownloadBanner({ user, isDesktop }) {
 
     <div
       style={{
-        marginTop:60,
+        marginTop:14,
 
         borderRadius:28,
 
@@ -996,7 +1169,7 @@ function DownloadBanner({ user, isDesktop }) {
 
         padding:isDesktop
           ? "34px 40px"
-          : "26px 22px",
+          : "20px 18px",
 
         position:"relative",
       }}
@@ -1057,7 +1230,6 @@ function DownloadBanner({ user, isDesktop }) {
         {/* Buttons */}
 
 
-
 <div
   style={{
     display: "flex",
@@ -1092,7 +1264,7 @@ function DownloadBanner({ user, isDesktop }) {
       boxShadow: "0 8px 22px rgba(0,0,0,.08)",
     }}
   >
-    {isDesktop ? "📄 Download Laporan PDF" : "📄 PDF"}
+    {isDesktop ? "Download Laporan PDF" : "PDF"}
   </button>
 
   {/* IMAGE */}
@@ -1122,7 +1294,7 @@ function DownloadBanner({ user, isDesktop }) {
         "0 12px 28px rgba(123,92,245,.35)",
     }}
   >
-    {isDesktop ? "🖼 Download Image TalentDNA" : "🖼 Image"}
+    {isDesktop ? "Download Image TalentDNA" : "Image"}
   </button>
 
 </div>
@@ -1136,11 +1308,11 @@ function DownloadBanner({ user, isDesktop }) {
 }
 
 /* ─────────────────────────── DOMAIN DETAIL SCREEN ─────────────────────────── */
-function DomainDetailScreen({ domainKey, onBack, isDesktop }) {
+function DomainDetailScreen({ domainKey, onBack, isDesktop, theme }) {
   const d = DOMAINS[domainKey];
   const talents = TALENTS.filter(t => t.domain === domainKey);
   return (
-    <div style={{ minHeight:"100vh", background:C.pageBg }}>
+    <div style={{ minHeight:"100vh", background:theme.pageBg, color:theme.textPrimary }}>
       {/* Header */}
       <div style={{ background:`linear-gradient(145deg, ${C.navy}, ${C.purpleCard})`, padding: isDesktop ? "36px 0 44px" : "22px 20px 30px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", right:-30, top:-30, opacity:0.3 }}>
@@ -1172,10 +1344,10 @@ function DomainDetailScreen({ domainKey, onBack, isDesktop }) {
       {/* Content */}
       <div style={{ maxWidth: isDesktop?960:"100%", margin:"0 auto", padding: isDesktop?"36px 48px 56px":"20px 18px 36px" }}>
         <div style={{
-          background:C.white, borderRadius:18, padding: isDesktop?"24px 28px":"16px 18px",
-          border:`1px solid ${C.purpleTint}`, marginBottom: isDesktop?32:22,
+          background:theme.surface, borderRadius:18, padding: isDesktop?"24px 28px":"16px 18px",
+          border:`1px solid ${theme.border}`, marginBottom: isDesktop?32:22,
         }}>
-          <p style={{ fontFamily:FONT_BODY, fontSize: isDesktop?14.5:13.5, lineHeight:1.75, color:C.textSecondary, margin:0 }}>{d.longDesc}</p>
+          <p style={{ fontFamily:FONT_BODY, fontSize: isDesktop?14.5:13.5, lineHeight:1.75, color:theme.textSecondary, margin:0 }}>{d.longDesc}</p>
         </div>
         <SectionLabel>{talents.length} Talent di Domain {d.label}</SectionLabel>
         <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginTop:14 }}>
@@ -1202,7 +1374,7 @@ function DomainDetailScreen({ domainKey, onBack, isDesktop }) {
 }
 
 /* ─────────────────────────── MAIN RESULTS SCREEN ─────────────────────────── */
-function ResultsScreen({ user, onOpenDomain, isDesktop }) {
+function ResultsScreen({ user, onOpenDomain, isDesktop, darkMode, setDarkMode, theme }) {
   const [query, setQuery] = useState("");
   const [activeDomain, setActiveDomain] = useState("All");
   const [selectedTalent, setSelectedTalent] = useState(null);
@@ -1252,9 +1424,19 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
   const colsMain = isDesktop ? 4 : 2;
   const colsBottom = isDesktop ? 5 : 2;
 
-  return (
-    <>
-      <TalentModal talent={selectedTalent} onClose={() => setSelectedTalent(null)}/>
+ return (
+  <div
+    style={{
+      background: theme.pageBg,
+      minHeight: "100vh",
+      transition: "all .35s ease",
+    }}
+  >
+    <TalentModal
+      talent={selectedTalent}
+      onClose={() => setSelectedTalent(null)}
+      theme={theme}
+    />
 
      {/* ── STICKY NAVBAR ── */}
 <div
@@ -1262,10 +1444,10 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
     position: "sticky",
     top: 0,
     zIndex: 100,
-    background: isDesktop ? "rgba(245,244,255,0.85)" : C.pageBg,
+    background: theme.navBg,
     backdropFilter: isDesktop ? "blur(14px)" : "none",
     WebkitBackdropFilter: isDesktop ? "blur(14px)" : "none",
-    borderBottom: `1px solid ${C.purpleTint}`,
+    borderBottom: `1px solid ${theme.border}`,
     padding: isDesktop ? "0" : "14px 18px 12px",
   }}
 >
@@ -1290,40 +1472,72 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
       }}
     />
 
-    {/* User */}
     <div
       style={{
         display: "flex",
         alignItems: "center",
         gap: 12,
-        cursor: "pointer",
       }}
     >
-      <img
-  src={profileImg}
-  alt="Profile"
-  style={{
-    width: isDesktop ? 40 : 36,
-    height: isDesktop ? 40 : 36,
-    borderRadius: "50%",
-    objectFit: "cover",
-    boxShadow: "0 6px 16px rgba(123,92,245,.18)",
-    flexShrink: 0,
-  }}
-/>
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: isDesktop ? 8 : 0,
+          justifyContent: "center",
+          padding: isDesktop ? "10px 14px" : "10px",
+          minWidth: isDesktop ? 130 : 40,
+          height: isDesktop ? 42 : 40,
+          borderRadius: 999,
+          border: `1px solid ${theme.border}`,
+          background: theme.surface,
+          color: theme.textPrimary,
+          cursor: "pointer",
+          fontFamily: FONT_BODY,
+          fontWeight: 700,
+          fontSize: isDesktop ? 13 : 0,
+          transition: "all .2s ease",
+        }}
+      >
+        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        {isDesktop && (darkMode ? "Light Mode" : "Dark Mode")}
+      </button>
 
-      {isDesktop && (
-        <span
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          cursor: "pointer",
+        }}
+      >
+        <img
+          src={profileImg}
+          alt="Profile"
           style={{
-            fontFamily: FONT_BODY,
-            fontSize: 14,
-            fontWeight: 600,
-            color: C.textPrimary,
+            width: isDesktop ? 40 : 36,
+            height: isDesktop ? 40 : 36,
+            borderRadius: "50%",
+            objectFit: "cover",
+            boxShadow: "0 6px 16px rgba(123,92,245,.18)",
+            flexShrink: 0,
           }}
-        >
-          {user.name}
-        </span>
-      )}
+        />
+
+        {isDesktop && (
+          <span
+            style={{
+              fontFamily: FONT_BODY,
+              fontSize: 14,
+              fontWeight: 600,
+              color: theme.navText,
+            }}
+          >
+            {user.name}
+          </span>
+        )}
+      </div>
     </div>
   </div>
 </div>
@@ -1339,7 +1553,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
         {isDesktop ? <DesktopHero name={user.name}/> : <MobileHero name={user.name}/>}
 
         {/* Domain structure */}
-        <DomainSummaryCards onOpenDomain={onOpenDomain} isDesktop={isDesktop}/>
+        <DomainSummaryCards onOpenDomain={onOpenDomain} isDesktop={isDesktop} theme={theme} />
 
         {/* Talent explorer */}
         <div style={{ marginBottom: isDesktop ? 20 : 12 }}>
@@ -1353,7 +1567,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
               <SectionLabel>Eksplorasi Talent</SectionLabel>
             </div>
           )}
-          <SearchFilterBar query={query} onQueryChange={setQuery} activeDomain={activeDomain} onDomainChange={setActiveDomain}/>
+          <SearchFilterBar query={query} onQueryChange={setQuery} activeDomain={activeDomain} onDomainChange={setActiveDomain} theme={theme}/>
         </div>
 
         {query.trim() ? (
@@ -1365,6 +1579,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
     defaultOpen={true}
     onSelectTalent={setSelectedTalent}
     cols={colsMain}
+    theme={theme}
   />
 
 ) : (
@@ -1384,6 +1599,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
       defaultOpen={true}
       onSelectTalent={setSelectedTalent}
       cols={colsMain}
+      theme={theme}
     />
 
     <TalentGridSection
@@ -1393,6 +1609,7 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
       defaultOpen={false}
       onSelectTalent={setSelectedTalent}
       cols={colsMain}
+      theme={theme}
     />
 
     <TalentGridSection
@@ -1402,28 +1619,50 @@ function ResultsScreen({ user, onOpenDomain, isDesktop }) {
       defaultOpen={false}
       onSelectTalent={setSelectedTalent}
       cols={colsBottom}
+      theme={theme}
     />
 
   </div>
 
 )}
 
-        {/* Download CTA */}
-        <DownloadBanner user={user} isDesktop={isDesktop}/>
+                {/* Download CTA */}
+        <DownloadBanner
+          user={user}
+          isDesktop={isDesktop}
+        />
       </div>
-      <MrZeroFloatingButton isDesktop={isDesktop} />
-    </>
-  );
+
+      <MrZeroFloatingButton
+        isDesktop={isDesktop}
+      />
+  </div>
+);
 }
 
 /* ─────────────────────────── ROOT ─────────────────────────── */
 export default function TalentDNAResults() {
   const [activeDomainView, setActiveDomainView] = useState(null);
   const [selectedTalent,   setSelectedTalent]   = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
   const isDesktop = useIsDesktop();
 
+  const theme = {
+    ...C,
+    pageBg: darkMode ? "#0F1428" : C.pageBg,
+    white: darkMode ? "#171D34" : "#FFFFFF",
+    textPrimary: darkMode ? "#FFFFFF" : C.textPrimary,
+    textSecondary: darkMode ? "#AAB2D8" : C.textSecondary,
+    purpleTint: darkMode ? "#293152" : C.purpleTint,
+    mutedText: darkMode ? "#C9D0F3" : C.mutedText,
+    surface: darkMode ? "#161E3F" : "#FFFFFF",
+    navBg: darkMode ? "rgba(15,20,40,0.92)" : "rgba(245,244,255,0.85)",
+    navText: darkMode ? "#E3E8FF" : C.textPrimary,
+    border: darkMode ? "#2A3153" : C.purpleTint,
+  };
+
   return (
-    <div style={{ minHeight:"100vh", background:C.pageBg, fontFamily:FONT_BODY }}>
+    <div style={{ minHeight:"100vh", background:theme.pageBg, color:theme.textPrimary, fontFamily:FONT_BODY }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
@@ -1516,12 +1755,13 @@ export default function TalentDNAResults() {
           onBack={() => setActiveDomainView(null)}
           onSelectTalent={setSelectedTalent}
           isDesktop={isDesktop}
+          theme={theme}
         />
       ) : (
-        <ResultsScreen user={USER} onOpenDomain={setActiveDomainView} isDesktop={isDesktop}/>
+        <ResultsScreen user={USER} onOpenDomain={setActiveDomainView} isDesktop={isDesktop} darkMode={darkMode} setDarkMode={setDarkMode} theme={theme}/>
       )}
 
-      <TalentModal talent={selectedTalent} onClose={() => setSelectedTalent(null)}/>
+      <TalentModal talent={selectedTalent} onClose={() => setSelectedTalent(null)} theme={theme}/>
     </div>
   );
 }
