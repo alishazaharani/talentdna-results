@@ -4,6 +4,7 @@ import tdnaLogo from "../assets/tdna_logo.png";
 import mrZero from "../assets/mrzero.png";
 import { talents } from "../data/talents";
 import profileImg from "../assets/profile.jpg";
+import reportImage from "../assets/talentdna_results.jpeg";
 
 /* ─────────────────────────── DESIGN TOKENS ─────────────────────────── */
 const C = {
@@ -963,60 +964,175 @@ function DomainSummaryCards({ onOpenDomain, isDesktop }) {
 
 /* ─────────────────────────────────────────────── SHARED: Download CTA Banner ─────────────────────────────────────────────── */
 function DownloadBanner({ user, isDesktop }) {
+
+  const handleDownloadImage = () => {
+
+    const link = document.createElement("a");
+
+    link.href = reportImage;
+
+    link.download = "talent-results.png";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+  };
+
   return (
-    <div style={{
-      background:`linear-gradient(135deg, ${C.navy}F2, #2D1B80)`,
-      borderRadius: isDesktop ? 24 : 20,
-      padding: isDesktop ? "32px 40px" : "24px 22px",
-      display:"flex",
-      flexDirection: isDesktop ? "row" : "column",
-      alignItems: isDesktop ? "center" : "flex-start",
-      justifyContent:"space-between",
-      marginTop: isDesktop ? 40 : 12,
-      gap: isDesktop ? 24 : 20,
-      position:"relative", overflow:"hidden",
-    }}>
-      {/* Decorative orbit watermark */}
-      <div style={{
-        position:"absolute",
-        right: isDesktop ? -20 : -30,
-        top: isDesktop ? -20 : "auto",
-        bottom: isDesktop ? "auto" : -30,
-        opacity:0.12,
-        pointerEvents:"none",
-      }}>
-        <DnaOrbitMark size={isDesktop ? 180 : 140}/>
+
+    <div
+      style={{
+        marginTop:60,
+
+        borderRadius:28,
+
+        overflow:"hidden",
+
+        background:
+          "linear-gradient(135deg,#23186E,#4C2FB6)",
+
+        padding:isDesktop
+          ? "34px 40px"
+          : "26px 22px",
+
+        position:"relative",
+      }}
+    >
+
+      <div
+        style={{
+          display:"flex",
+
+          flexDirection:isDesktop
+            ?"row"
+            :"column",
+
+          justifyContent:"space-between",
+
+          gap:26,
+
+          alignItems:isDesktop
+            ?"center"
+            :"stretch",
+        }}
+      >
+
+        {/* Left */}
+
+        <div>
+
+          <div
+            style={{
+              fontSize:isDesktop?34:24,
+
+              fontWeight:800,
+
+              color:"#fff",
+
+              marginBottom:10,
+            }}
+          >
+            Simpan Hasil TalentDNA-mu
+          </div>
+
+          <div
+            style={{
+              color:"rgba(255,255,255,.75)",
+
+              maxWidth:320,
+
+              lineHeight:1.6,
+            }}
+          >
+            Laporan lengkap 45 Talenta tersedia
+            dalam format PDF maupun Image
+            yang siap disimpan dan dibagikan.
+          </div>
+
+        </div>
+
+        {/* Buttons */}
+
+
+
+<div
+  style={{
+    display: "flex",
+    flexDirection: isDesktop ? "row" : "row",
+    gap: 12,
+    width: isDesktop ? "auto" : "100%",
+  }}
+>
+
+  {/* PDF */}
+
+  <button
+    onClick={() => generatePDFReport(user)}
+    style={{
+      width: isDesktop ? 240 : "50%",
+      height: isDesktop ? 54 : 46,
+
+      border: "none",
+
+      borderRadius: 16,
+
+      background: "#fff",
+
+      color: C.primary,
+
+      fontWeight: 700,
+
+      fontSize: isDesktop ? 14 : 13,
+
+      cursor: "pointer",
+
+      boxShadow: "0 8px 22px rgba(0,0,0,.08)",
+    }}
+  >
+    {isDesktop ? "📄 Download Laporan PDF" : "📄 PDF"}
+  </button>
+
+  {/* IMAGE */}
+
+  <button
+    onClick={handleDownloadImage}
+    style={{
+      width: isDesktop ? 240 : "50%",
+      height: isDesktop ? 54 : 46,
+
+      border: "none",
+
+      borderRadius: 16,
+
+      background:
+        "linear-gradient(135deg,#9B72FF,#7B5CF5)",
+
+      color: "#fff",
+
+      fontWeight: 700,
+
+      fontSize: isDesktop ? 14 : 13,
+
+      cursor: "pointer",
+
+      boxShadow:
+        "0 12px 28px rgba(123,92,245,.35)",
+    }}
+  >
+    {isDesktop ? "🖼 Download Image TalentDNA" : "🖼 Image"}
+  </button>
+
+</div>
+
       </div>
 
-      {/* Text */}
-      <div style={{ position:"relative", zIndex:1 }}>
-        <div style={{
-          fontFamily:FONT_HEAD,
-          fontSize: isDesktop ? 20 : 17,
-          fontWeight:700, color:C.white,
-          marginBottom: isDesktop ? 6 : 5,
-        }}>
-          Simpan Hasil TalentDNA-mu
-        </div>
-        <div style={{
-          fontFamily:FONT_BODY,
-          fontSize: isDesktop ? 13.5 : 13,
-          color:C.mutedText, lineHeight:1.6,
-          maxWidth: isDesktop ? 380 : "100%",
-        }}>
-          Laporan lengkap 45 talenta tersedia dalam format PDF — siap dicetak atau dibagikan.
-        </div>
-      </div>
-
-      {/* Button */}
-      <div style={{
-        flexShrink:0, position:"relative", zIndex:1,
-        width: isDesktop ? "auto" : "100%",
-      }}>
-        <DownloadReportButton user={user} centered={isDesktop}/>
-      </div>
     </div>
+
   );
+
 }
 
 /* ─────────────────────────── DOMAIN DETAIL SCREEN ─────────────────────────── */
